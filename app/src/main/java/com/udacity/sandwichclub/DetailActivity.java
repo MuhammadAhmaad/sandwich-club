@@ -12,25 +12,24 @@ import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
-    private TextView mAlsoKnownAsTv;
-    private TextView mIngredientsTv;
-    private TextView mOriginTv;
-    private TextView mDescriptionTv;
+    @BindView(R.id.also_known_tv)  TextView mAlsoKnownAsTv;
+    @BindView(R.id.ingredients_tv) TextView mIngredientsTv;
+    @BindView(R.id.origin_tv)  TextView mOriginTv;
+    @BindView(R.id.description_tv) TextView mDescriptionTv;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        mAlsoKnownAsTv = (TextView) findViewById(R.id.also_known_tv);
-        mIngredientsTv = (TextView) findViewById(R.id.ingredients_tv);
-        mOriginTv = (TextView) findViewById(R.id.origin_tv);
-        mDescriptionTv = (TextView) findViewById(R.id.description_tv);
-
+        ButterKnife.bind(this);
         ImageView ingredientsIv = findViewById(R.id.image_iv);
 
         Intent intent = getIntent();
@@ -57,6 +56,8 @@ public class DetailActivity extends AppCompatActivity {
         populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
+                .placeholder(R.drawable.ic_file_download_black_24dp)
+                .error(R.drawable.ic_error_black_24dp)
                 .into(ingredientsIv);
 
         setTitle(sandwich.getMainName());
@@ -77,15 +78,13 @@ public class DetailActivity extends AppCompatActivity {
         } else
             mOriginTv.setText("--not found--");
         if (sandwich.getAlsoKnownAs().size() != 0) {
-            for (String i : sandwich.getAlsoKnownAs()) {
-                mAlsoKnownAsTv.append(i + " , ");
-            }
+            String alsoKnownAs = TextUtils.join(", ", sandwich.getAlsoKnownAs());
+            mAlsoKnownAsTv.setText(alsoKnownAs);
         } else
             mAlsoKnownAsTv.setText("--not found--");
         if (sandwich.getIngredients().size() != 0) {
-            for (String i : sandwich.getIngredients()) {
-                mIngredientsTv.append(i + " , ");
-            }
+            String ingridientsString = TextUtils.join(", ", sandwich.getIngredients());
+            mIngredientsTv.setText(ingridientsString);
         } else
             mIngredientsTv.setText("--not found--");
     }

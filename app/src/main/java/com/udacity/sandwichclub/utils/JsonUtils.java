@@ -46,7 +46,7 @@ public class JsonUtils {
 
             JSONArray jsonSandwichIngredientsArray= jasonSandwich.getJSONArray(INGREDIENTS);
             sandwich.setIngredients(new ArrayList<String>());
-            for(int i=0;i<jsonSandwichKnownAsArray.length();i++)
+            for(int i=0;i<jsonSandwichIngredientsArray.length();i++)
             {
                 String ingredientI = jsonSandwichIngredientsArray.getString(i);
                 sandwich.getIngredients().add(ingredientI);
